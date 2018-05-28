@@ -1,3 +1,6 @@
+-- Se recomienda utilizar un tipo de dato Sudoku que lea un archivo.
+-- Que el tipo Tablero derive de la clase parse.
+
 import Data.Array
 
 -- Resuelve el ejemplo del rompecabezas especificado de la entrada.

@@ -54,17 +54,17 @@ soluciones t = soluciones' (casillasVacias t) t
 casillasVacias :: Tablero -> [Casilla]
 casillasVacias t = [(fil, col) | fil <- [0..8], col <- [0..8], t ! (fil, col) == 0]
 
--- Determine whether the specified mark can be placed at specified position.
+-- Determina si el valor especificado se puede colocar en la posición especificada.
 esValorPosible :: Valor -> Casilla -> Tablero -> Bool
-esValorPosible m (fil, col) t = noEnFila && noEnColumna && noEnCaja
+esValorPosible m (fil, col) t = noEnFila && noEnColumna && noEnBloque
   where
     noEnFila    = notElem m $ valoresEnFila t fil
     noEnColumna = notElem m $ valoresEnColumna t col
-    noEnCaja    = notElem m $ valoresBloque3x3 t (fil, col)
+    noEnBloque  = notElem m $ valoresEnBloque t (fil, col)
 
 -- Regresa el tablero con el valor especificado en la Casilla especifica.
 copiaConValor :: Valor -> Casilla -> Tablero -> Tablero
-copiaConValor mark (fil, col) t = t // [((fil, col), mark)]
+copiaConValor valor (fil, col) t = t // [((fil, col), valor)]
 
 -- Regresa las valores en la fila especifada
 valoresEnFila :: Tablero -> Int -> [Valor]
@@ -75,8 +75,8 @@ valoresEnColumna ::  Tablero -> Int -> [Valor]
 valoresEnColumna t col = [t ! loc | loc <- range((0, col), (8, col))]
 
 -- Regresa las valores en la bloque de 3x3 que incluye la Casilla especificada.
-valoresBloque3x3 :: Tablero -> Casilla -> [Valor]
-valoresBloque3x3 t (fil, col) = [t ! loc | loc <- casillas]
+valoresEnBloque :: Tablero -> Casilla -> [Valor]
+valoresEnBloque t (fil, col) = [t ! loc | loc <- casillas]
   where
     fil' = (div fil 3) * 3
     col' = (div col 3) * 3
@@ -98,5 +98,5 @@ headOrNothing (x:xs) = Just x
 
 -- Imprimer el tablero en caso que no sea Nothing.
 imprimeTablero :: Maybe Tablero -> IO ()
-imprimeTablero Nothing  = putStrLn "No solucion"
+imprimeTablero Nothing  = putStrLn "No hay solución para el Sudoku que quieres resolver! (•̀o•́)ง"
 imprimeTablero (Just t) = mapM_ putStrLn [show $ valoresEnFila t  fil | fil <- [0..8]]

@@ -2,11 +2,9 @@
 -- Que el tipo Tablero derive de la clase parse.
 
 import Data.Array
-
--- Resuelve el ejemplo del rompecabezas especificado de la entrada.
-main = do
-    let solucion = resuelve tableroSudoku
-    imprimeTablero solucion
+import System.Environment  
+import System.IO  
+import System.Directory  
 
 -- Las valores en el tablero están representadas por enteros en el rango de 0..9 donde 0 representa "vacío".
 type Valor = Int
@@ -14,91 +12,33 @@ type Valor = Int
 -- Un cuadro es identificado por un par (fila, columna).
 type Casilla = (Int, Int)
 
--- Un tablero Sudoku es una array 9x9 de valores.
+-- Un tablero Sudoku es un array 9x9 de valores.
 type Tablero = Array Casilla Valor
 
--- El tablero Sudoku para ser resuelto.
-tableroSudoku :: Tablero
-tableroSudoku = array ((0, 0), (8, 8)) $ asociaSudoku ejemploSudoku
+--Simplemente se le da un tipo a la función read que es de tipo Read a => String -> a
+rList :: String -> [[Valor]]    
+rList = read
 
--- Rompecabezas de ejemplo http://en.wikipedia.org/wiki/Sudoku
-ejemploSudoku :: [[Valor]]
-ejemploSudoku = [[5, 3, 0,  0, 7, 0,  0, 0, 0],
-                 [6, 0, 0,  1, 9, 5,  0, 0, 0],
-                 [0, 9, 8,  0, 0, 0,  0, 6, 0],
+--Función principal  
+main = do
+  putStrLn "Nombre del archivo donde está contenido el Sudoku:";
+  fileName <- getLine;                               --Obtiene el nombre del archivo
+  fileExists <- doesFileExist fileName;              --Revisa si existe
+  if fileExists  
+    then do
+    contents <- readFile fileName;                   --Lee todo el archivo como String y lo guarda en contents
+    sudoku <- return $ rList contents;               --Convierte toda la String en una lista de listas de valores
+    let solucion = resuelve $ tableroSudoku sudoku;  --Resuelve el sudoku
+    imprimeTablero solucion                          --Lo imprime
+    putStrLn "\n¡Espero no haber tardado mucho, pero es que es NP-Completo!";
+    else do
+    putStrLn "The file doesn't exist! ¬,¬'";              --Mensajito chido
+                      
 
-                 [8, 0, 0,  0, 6, 0,  0, 0, 3],
-                 [4, 0, 0,  8, 0, 3,  0, 0, 1],
-                 [7, 0, 0,  0, 2, 0,  0, 0, 6],
+-- Cambia los arreglos de valores y los convierte a un tipo Tablero.
+tableroSudoku :: [[Valor]] -> Tablero
+tableroSudoku sudoku = array ((0, 0), (8, 8)) $ asociaSudoku sudoku
 
-                 [0, 6, 0,  0, 0, 0,  2, 8, 0],
-                 [0, 0, 0,  4, 1, 9,  0, 0, 5],
-                 [0, 0, 0,  0, 8, 0,  0, 7, 9]]
-
-ejemploSudokuFacil :: [[Valor]]
-ejemploSudokuFacil = [[0, 0, 5, 3, 6, 0, 4, 0, 0],
-                      [9, 6, 2, 0, 0, 4, 0, 7, 0],
-                      [3, 0, 4, 0, 2, 9, 0, 6, 0],
-
-                      [8, 2, 0, 9, 4, 0, 0, 1, 3],
-                      [0, 4, 9, 0, 3, 0, 0, 5, 7],
-                      [0, 0, 0, 2, 0, 0, 9, 8, 0],
-
-                      [4, 0, 6, 0, 0, 1, 0, 0, 2],
-                      [0, 0, 0, 6, 9, 3, 0, 0, 5],
-                      [0, 0, 3, 0, 8, 0, 0, 0, 0]]
-
-ejemploSudokuIntermedio :: [[Valor]]
-ejemploSudokuIntermedio = [[0, 0, 0, 0, 0, 0, 6, 0, 9],
-                           [1, 0, 0, 0, 0, 4, 0, 0, 0],
-                           [0, 0, 5, 3, 0, 6, 8, 2, 1],
-
-                           [0, 0, 4, 6, 7, 0, 0, 5, 0],
-                           [0, 0, 7, 0, 0, 0, 9, 0, 0],
-                           [0, 0, 0, 5, 4, 0, 0, 0, 0],
-
-                           [3, 7, 0, 4, 0, 5, 2, 0, 6],
-                           [0, 0, 0, 0, 0, 0, 5, 1, 0],
-                           [0, 6, 0, 0, 2, 0, 0, 3, 7]]
-
-ejemploSudokuDificil :: [[Valor]]
-ejemploSudokuDificil = [[0, 0, 4, 8, 6, 0, 0, 3, 0],
-                        [0, 0, 1, 0, 0, 0, 0, 9, 0],
-                        [8, 0, 0, 0, 0, 9, 0, 6, 0],
-
-                        [5, 0, 0, 2, 0, 6, 0, 0, 1],
-                        [0, 2, 7, 0, 0, 1, 0, 0, 0],
-                        [0, 0, 0, 0, 4, 3, 0, 0, 6],
-
-                        [0, 5, 0, 0, 0, 0, 0, 0, 0],
-                        [0, 0, 9, 0, 0, 0, 4, 0, 0],
-                        [0, 0, 0, 4, 0, 0, 0, 1, 5]]
-
-ejemploSudokuExperto :: [[Valor]]
-ejemploSudokuExperto = [[3, 0, 0, 1, 2, 0, 0, 0, 0],
-                        [0, 0, 0, 0, 0, 7, 0, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 7, 0, 0],
-
-                        [5, 0, 0, 0, 0, 0, 3, 0, 9],
-                        [0, 0, 6, 0, 0, 4, 8, 0, 0],
-                        [0, 0, 0, 8, 1, 0, 2, 5, 0],
-
-                        [4, 0, 2, 0, 7, 0, 0, 0, 5],
-                        [6, 0, 0, 9, 0, 0, 0, 0, 0],
-                        [0, 1, 0, 0, 0, 0, 0, 8, 0]]
-
-ejemploSudokuSinSolucion :: [[Valor]]
-ejemploSudokuSinSolucion = [[7, 0, 0, 0, 1, 0, 0, 0, 0],
-                            [0, 0, 0, 7, 0, 0, 0, 0, 2],
-                            [0, 7, 0, 9, 0, 0, 5, 1, 0],
-
-                            [0, 2, 0, 0, 0, 9, 0, 0, 0],
-                            [0, 3, 1, 0, 0, 0, 0, 4, 0],
-                            [0, 0, 9, 8, 0, 0, 0, 7, 0],
-
-                            [4, 0, 0, 0, 5, 0, 0, 0, 3],
-                            [0, 0, 8, 0, 0, 6, 0, 0, 0],
-                            [0, 0, 0, 0, 0, 4, 0, 6, 9]]
 -- Regresa la primera solución o Nothing si no encuentra soluciones.
 resuelve :: Tablero -> Maybe Tablero
 resuelve = headOrNothing . soluciones
@@ -149,13 +89,13 @@ valoresEnBloque t (fil, col) = [t ! loc | loc <- casillas]
     col' = (div col 3) * 3
     casillas = range((fil', col'), (fil' + 2, col' + 2))
 
--- Convierte una lista de filas de valores (como en ejemploSudoku) a una lista de asociaciones de array.
+-- Convierte una lista de filas de valores a una lista de asociaciones de array.
 asociaSudoku :: [[Valor]] -> [(Casilla, Valor)]
 asociaSudoku = concatMap asociaFil . zip [0..8]
   where
-    asociaFil :: (Int, [Valor]) -> [((Int, Int), Valor)]
+    asociaFil :: (Int, [Valor]) -> [(Casilla, Valor)]
     asociaFil (fil, valores) = asociaCol fil $ zip [0..8] valores
-    asociaCol :: Int -> [(Int, Valor)] -> [((Int, Int), Valor)]
+    asociaCol :: Int -> [(Int, Valor)] -> [(Casilla, Valor)]
     asociaCol fil cols = map (\(col, m) -> ((fil, col), m)) cols
 
 -- Si no es vacía la lista, devuelve la cabeza. En otro caso, Nothing.
@@ -163,7 +103,7 @@ headOrNothing :: [a] -> Maybe a
 headOrNothing []     = Nothing
 headOrNothing (x:xs) = Just x
 
--- Imprimer el tablero en caso que no sea Nothing.
+-- Imprimir el tablero en caso que no sea Nothing.
 imprimeTablero :: Maybe Tablero -> IO ()
 imprimeTablero Nothing  = putStrLn "No hay solución para el Sudoku que quieres resolver! (•̀o•́)ง"
 imprimeTablero (Just t) = mapM_ putStrLn [show $ valoresEnFila t  fil | fil <- [0..8]]

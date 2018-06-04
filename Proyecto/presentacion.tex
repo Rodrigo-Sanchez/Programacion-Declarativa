@@ -1,0 +1,776 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% * <rodrigosanchez@ciencias.unam.mx> 2018-06-04T08:35:40.012Z:
+%
+% ^.
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass{beamer}
+
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+%\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\selectlanguage{spanish}
+\usepackage{CJKutf8} % Pa'l japonés.
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{minted} % Para código en Haskell
+\setminted{fontsize=\footnotesize, baselinestretch=1}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Sudoku Solver]{Sudoku Solver en Haskell} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author{} % Your name
+\institute[UNAM] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+Rodríguez Hernández Alexis Arturo \\
+Sánchez Morales Rodrigo Alejandro \\
+\medskip
+Universidad Nacional Autónoma de México \\ % Your institution for the title page
+Facultad de Ciencias \\
+\medskip
+\textit{Programación Declarativa, 2018-II} % Your email address
+}
+\date{\today} % Date, can be changed to a custom date
+
+\begin{document}
+
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+\begin{frame}
+\frametitle{Tabla de contenidos} % Table of contents slide, comment this block out to remove it
+\tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+%------------------------------------------------
+\section{Introducción} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
+%------------------------------------------------
+
+\subsection{¿Qué es el Sudoku?} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+
+\begin{frame}
+\frametitle{Inicios}
+ Es un juego matemático que se inventó a finales de la década de 1970 por el arquitecto \textit{Howard Garns} nacido en Indianapolis, Indiana (1905-1989). Que originalmente lo llamó "\textit{Number Place}". El cual fue publicado por \textit{Dell Magazines}.
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{howard10.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Inicios}
+ Es un juego matemático que se inventó a finales de la década de 1970 por el arquitecto \textit{Howard Garns} nacido en Indianapolis, Indiana (1905-1989). Que originalmente lo llamó "\textit{Number Place}". El cual fue publicado por \textit{Dell Magazines}.
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{howard1.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Inicios}
+ Es un juego matemático que se inventó a finales de la década de 1970 por el arquitecto \textit{Howard Garns} nacido en Indianapolis, Indiana (1905-1989). Que originalmente lo llamó "\textit{Number Place}". El cual fue publicado por \textit{Dell Magazines}.
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{howard13.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Inicios}
+ Es un juego matemático que se inventó a finales de la década de 1970 por el arquitecto \textit{Howard Garns} nacido en Indianapolis, Indiana (1905-1989). Que originalmente lo llamó "\textit{Number Place}". El cual fue publicado por \textit{Dell Magazines}.
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{howard11.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Inicios}
+ Es un juego matemático que se inventó a finales de la década de 1970 por el arquitecto \textit{Howard Garns} nacido en Indianapolis, Indiana (1905-1989). Que originalmente lo llamó "\textit{Number Place}". El cual fue publicado por \textit{Dell Magazines}.
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{howard12.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Japón (\begin{CJK*}{UTF8}{min} 日本 \end{CJK*} )}
+En japonés, \begin{CJK*}{UTF8}{min} 数独 \end{CJK*} (\textit{Sūdoku}). Adquirió popularidad en Japón en la década de 1980. Fue introducido por \textit{Nikoli} y su presidente;  \textit{Maki Kaji} lo renombró \textit{\textbf{Su}uji wa \textbf{doku}shin ni kagiru}. (Los dígitos deben ir solos/Los dígitos están limitados a una ocurrencia).
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{japones2.png}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Japón (\begin{CJK*}{UTF8}{min} 日本 \end{CJK*} )}
+En japonés, \begin{CJK*}{UTF8}{min} 数独 \end{CJK*} (\textit{Sūdoku}). Adquirió popularidad en Japón en la década de 1980. Fue introducido por \textit{Nikoli} y su presidente;  \textit{Maki Kaji} lo renombró \textit{\textbf{Su}uji wa \textbf{doku}shin ni kagiru}. (Los dígitos deben ir solos/Los dígitos están limitados a una ocurrencia).
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{japones.png}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Alrededor del mundo}
+Se convirtió en un fenómeno mundial cuando se dio a conocer en el ámbito internacional en 2005 cuando numerosos periódicos empezaron a publicarlo en su sección de pasatiempos, tal es el caso de \textit{The Times Newspaper} en Londres.
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{boy.png}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reglas}
+El juego consiste en colocar números del 1 al 9 usando cada dígito solamente una vez en toda fila, renglón y bloque.
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{howard2.png}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reglas}
+El juego consiste en colocar números del 1 al 9 usando cada dígito solamente una vez en toda fila, renglón y bloque.
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{howard3.png}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reglas}
+El juego consiste en colocar números del 1 al 9 usando cada dígito solamente una vez en toda fila, renglón y bloque.
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{howard4.png}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reglas}
+El juego consiste en colocar números del 1 al 9 usando cada dígito solamente una vez en toda fila, renglón y bloque.
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{howard7.png}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reglas}
+El juego consiste en colocar números del 1 al 9 usando cada dígito solamente una vez en toda fila, renglón y bloque.
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{howard5.png}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reglas}
+El juego consiste en colocar números del 1 al 9 usando cada dígito solamente una vez en toda fila, renglón y bloque.
+
+\begin{figure}
+\centering
+  \includegraphics[width=7.5cm]{howard6.png}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+\section{Dificultad de jugar Sudoku}
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Recuerden a Lucy (Definiciones)}
+\begin{block}{NP}
+Son los problemas que se puede revisar si una solución es correcta en tiempo polinomial.
+\end{block}
+\begin{block}{NP-Completo}
+El conjunto de todos los problemas X en NP tales que se existe algún problema Y en NP-Completo tal que podemos reducir Y a X en tiempo polinomial.
+\end{block}
+\begin{block}{NP-Duro}
+El conjunto de todos los problemas X tales que se existe algún problema Y en NP-Completo tal que podemos reducir Y a X en tiempo polinomial.
+\end{block}
+
+\end{frame}
+
+%------------------------------------------------
+
+\subsection{Reducciones}
+\begin{frame}
+
+\frametitle{¿Cómo probar NP-Completez?}
+\begin{block}{El algoritmo}
+Para probar que un problema es NP completo debemos probar que está en NP, buscar un problema NP completo y luego reducirlo a nuestro problema en tiempo polinomial.
+\end{block}
+\begin{figure}
+\centering
+  \includegraphics[width=7cm]{reductions.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reducción de Sudoku al Ciclo Hamiltoniano}
+\begin{block}{De manera rápida}
+Cada vértice en la gráfica representa la relación entre los números y la posición que ocupan en el sudoku.
+\end{block}
+\begin{figure}
+\centering
+  \includegraphics[width=8cm]{graph.jpg}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\section{Estrategias}
+
+\subsection{Tácticas ganadoras}
+
+\begin{frame}
+\frametitle{Técnicas para colocar números}
+\begin{block}{Candidato único}
+Es cuando una casilla específica puede contener un sólo número. Esto sucede cuando todos los números aparecen en la fila, columna o bloque específico.
+\end{block}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4.5cm]{1solecandidate.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{block}{Candidato forzado}
+Sabemos que cada bloque, fila y columna en un Sudoku debe contener un número entre 1 y 9. Por lo tanto, si un número puede ser puesto solamente en esa casilla, entonces debe ir ahí.
+\end{block}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4.5cm]{2uniquecandidate.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Técnicas para remover candidatos}
+\begin{block}{Interación bloque y columnas/filas}
+Este método no ayuda a escribir nuevos números, pero ayudará a identificar un número dentro de una fila o columna específica.
+\end{block}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4.5cm]{3blockcol.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{block}{Interación bloque/bloque}
+Esta técnica se entiende de manera más intuitiva mirando el siguiente ejemplo:
+\end{block}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4.5cm]{4blockblock.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{block}{Subconjunto desnudo}
+.
+\end{block}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4.5cm]{5nakedsubset.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{block}{Subconjunto escondido}
+.
+\end{block}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=2cm]{6hiddensubset.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+\section{Algoritmos Sudoku}
+%------------------------------------------------
+
+\subsection{Programación usando restricciones}
+\begin{frame}
+\frametitle{Backtracking}
+\begin{block}{}
+Consiste en buscar en el árbol de posibilidades, usando DFS, es un algoritmo de fuerza bruta.
+Aproximadamente existen $6.67 x 10^{21}$  posibles tableros.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Búsqueda estocástica}
+\begin{block}{}
+Son algoritmos que usan probabilidad y análisis de aleatoriedad, un ejemplo de este tipo de algoritmos son los algoritmos genéticos, el procedimiento estándar sería:
+\begin{itemize}
+\item
+Asignar números aleatorios a las casillas vacías.
+\item 
+Calcular el número de errores.
+\item
+Intercambiar los números insertados de tal forma que los errores tiendan a cero.
+\end{itemize}
+\end{block}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Lógica pura}
+\begin{block}{Programación usando restricciones}
+Consiste en convertir el problema a un conjunto de variables Lógicas que representan los estados del problema y sus posibles relaciones, existen sistemas expertos que resuelven estos modelos, como los sistemas de STRIPS.
+\end{block}
+\end{frame}
+
+\section{Diferentes versiones}
+
+\begin{frame}
+\frametitle{Sudoku Kids}
+\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+
+\column{.5\textwidth} % Left column and width
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4cm]{sudokuKids.jpg}
+\end{figure}
+
+\column{.5\textwidth} % Right column and width
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4cm]{sudokuKids2.jpg}
+\end{figure}
+\end{columns}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Sudoku Samurai}
+\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+
+\column{.5\textwidth} % Left column and width
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{sudokuSamurai.png}
+% * <rodrigosanchez@ciencias.unam.mx> 2018-06-04T13:59:24.334Z:
+%
+% ^.
+\end{figure}
+
+\column{.5\textwidth} % Right column and width
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{sudokuSamurai2.png}
+\end{figure}
+\end{columns}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Sudoku Nonomino}
+\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+
+\column{.5\textwidth} % Left column and width
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{sudokuNonomino.png}
+\end{figure}
+
+\column{.5\textwidth} % Right column and width
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{sudokuNonomino2.png}
+\end{figure}
+\end{columns}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Sudoku Killer}
+\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+
+\column{.5\textwidth} % Left column and width
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{sudokuKiller.png}
+\end{figure}
+
+\column{.5\textwidth} % Right column and width
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{sudokuKiller2.png}
+\end{figure}
+\end{columns}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Wordoku}
+\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+
+\column{.5\textwidth} % Left column and width
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{wordoku.png}
+\end{figure}
+
+\column{.5\textwidth} % Right column and width
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{wordoku2.png}
+\end{figure}
+\end{columns}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Cuboku}
+\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+
+\column{.5\textwidth} % Left column and width
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{cuboku.jpg}
+\end{figure}
+
+\column{.5\textwidth} % Right column and width
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5.5cm]{cuboku2.jpeg}
+\end{figure}
+\end{columns}
+\end{frame}
+
+%------------------------------------------------
+\section{Implementación}
+%------------------------------------------------
+
+\subsection{¿Cómo resolvimos el problema?}
+
+\begin{frame}[fragile]
+\frametitle{Representación del problema}
+\begin{minted}{haskell}
+-- Las valores en el tablero están representadas por
+-- enteros en el rango de 0..9 donde 0 representa "vacío".
+type Valor = Int
+
+-- Un cuadro es identificado por un par (fila, columna).
+type Casilla = (Int, Int)
+
+-- Un tablero Sudoku es un array 9x9 de valores.
+type Tablero = Array Casilla Valor
+\end{minted}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{minted}{haskell}
+-- Convierte una lista de filas de valores a una lista 
+-- de asociaciones de array.
+asociaSudoku :: [[Valor]] -> [(Casilla, Valor)]
+asociaSudoku = concatMap asociaFil . zip [0..8]
+  where
+    asociaFil :: (Int, [Valor]) -> [((Int, Int), Valor)]
+    asociaFil (fil, val) = asociaCol fil $ zip [0..8] val
+    asociaCol :: Int -> [(Int, Valor)] -> [((Int, Int), Valor)]
+    asociaCol fil cols = map (\(col, m) -> ((fil, col), m)) cols
+\end{minted}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{minted}{bash}
+*Main > asociaSudoku [[5, 3, 4, 6, 7, 8, 9, 1, 2], 
+                      [6, 7, 2, 1, 9, 5, 0, 4, 8], 
+                      [0, 9, 8, 3, 4, 0, 5, 6, 7], 
+                      [8, 5, 9, 7, 6, 1, 4, 2, 3], 
+                      [0, 2, 6, 8, 0, 3, 7, 9, 1], 
+                      [7, 1, 3, 9, 2, 4, 8, 5, 0], 
+                      [9, 6, 1, 5, 3, 7, 2, 8, 4], 
+                      [2, 8, 0, 4, 1, 9, 6, 3, 5], 
+                      [3, 4, 5, 2, 0, 6, 1, 7, 0]]
+\end{minted}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=10.5cm]{asociaSudoku.png}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{minted}{haskell}
+-- Determina si el valor especificado se puede colocar en la 
+-- posición especificada.
+esValorPosible :: Valor -> Casilla -> Tablero -> Bool
+esValorPosible m (fil, col) t = noEnFila && noEnColumna && noEnBloque
+  where
+    noEnFila    = notElem m $ valoresEnFila t fil
+    noEnColumna = notElem m $ valoresEnColumna t col
+    noEnBloque  = notElem m $ valoresEnBloque t (fil, col)
+\end{minted}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{minted}{bash}
+*Main > esValorPosible 1 (2, 0)
+                     $ tableroSudoku [[5, 3, 4, 6, 7, 8, 9, 1, 2], 
+                                      [6, 7, 2, 1, 9, 5, 0, 4, 8], 
+                                      [0, 9, 8, 3, 4, 0, 5, 6, 7], 
+                                      [8, 5, 9, 7, 6, 1, 4, 2, 3], 
+                                      [0, 2, 6, 8, 0, 3, 7, 9, 1], 
+                                      [7, 1, 3, 9, 2, 4, 8, 5, 0], 
+                                      [9, 6, 1, 5, 3, 7, 2, 8, 4], 
+                                      [2, 8, 0, 4, 1, 9, 6, 3, 5], 
+                                      [3, 4, 5, 2, 0, 6, 1, 7, 0]]
+
+True
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{minted}{bash}
+*Main > esValorPosible 7 (2,0)
+                     $ tableroSudoku [[5, 3, 4, 6, 7, 8, 9, 1, 2], 
+                                      [6, 7, 2, 1, 9, 5, 0, 4, 8], 
+                                      [0, 9, 8, 3, 4, 0, 5, 6, 7], 
+                                      [8, 5, 9, 7, 6, 1, 4, 2, 3], 
+                                      [0, 2, 6, 8, 0, 3, 7, 9, 1], 
+                                      [7, 1, 3, 9, 2, 4, 8, 5, 0], 
+                                      [9, 6, 1, 5, 3, 7, 2, 8, 4], 
+                                      [2, 8, 0, 4, 1, 9, 6, 3, 5], 
+                                      [3, 4, 5, 2, 0, 6, 1, 7, 0]]
+
+False
+\end{minted}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{minted}{haskell}
+-- Regresa una lista de casillas donde el valor es 0
+casillasVacias :: Tablero -> [Casilla]
+casillasVacias t = [(fil, col) | fil <- [0..8], 
+                                 col <- [0..8], 
+                                 t ! (fil, col) == 0]
+\end{minted}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{minted}{bash}
+*Main> casillasVacias $ tableroSudoku [[5, 3, 4, 6, 7, 8, 9, 1, 2], 
+                                       [6, 7, 2, 1, 9, 5, 0, 4, 8], 
+                                       [0, 9, 8, 3, 4, 0, 5, 6, 7], 
+                                       [8, 5, 9, 7, 6, 1, 4, 2, 3], 
+                                       [0, 2, 6, 8, 0, 3, 7, 9, 1], 
+                                       [7, 1, 3, 9, 2, 4, 8, 5, 0], 
+                                       [9, 6, 1, 5, 3, 7, 2, 8, 4], 
+                                       [2, 8, 0, 4, 1, 9, 6, 3, 5], 
+                                       [3, 4, 5, 2, 0, 6, 1, 7, 0]]
+
+[(1,6),(2,0),(2,5),(4,0),(4,4),(5,8),(7,2),(8,4),(8,8)]
+\end{minted}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Hagamos pruebas}
+\begin{minted}{bash}
+$ ghci sudokuSolver.hs 
+
+*Main> :set +s
+
+*Main> main
+
+sudoku0.txt
+\end{minted}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Referencias}
+\footnotesize{
+\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
+\bibitem[Wikipedia, 2018]{p1} Wikipedia, \emph{Sudoku}.
+\newblock (Consultado el 1 de junio, 2018).
+\newblock \url{https://en.wikipedia.org/wiki/Sudoku}
+
+\bibitem[]{} Research Gate, \emph{La dificultad de jugar Sudoku}. \newblock (Consultado el 2 de junio, 2018).
+\newblock \url{https://www.researchgate.net/publication/228920598_La_dificultad_de_jugar_sudoku}
+
+\bibitem[]{} Kristanix, \emph{Sudoku Solving Techniques}.
+\newblock (Consultado el 3 de junio, 2018).
+\newblock \url{https://www.kristanix.com/sudokuepic/sudoku-solving-techniques.php}
+
+\end{thebibliography}
+}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\Huge{\centerline{The end?}}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=7.5cm]{spidermoi.jpeg}
+\end{figure}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
